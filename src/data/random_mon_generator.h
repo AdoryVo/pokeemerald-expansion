@@ -2,9 +2,14 @@
 // struct RandomSpeciesGeneratorOptions and struct RandomItemGeneratorOptions in src/random_mon_generation.c.
 
 #include "constants/random_mon_generation.h"
+#include "random_mon_generation.h"
 
 static const struct RandomSpeciesGeneratorOptions sRandomSpeciesGeneratorOptions[RANDOM_SPECIES_OPTIONS_COUNT] =
 {
+    [SPECIES_GENERATOR_BST_RESTRICTED] =
+    {
+        .filterFunc = IsInBstRangeFilterFunc,
+    }
 };
 
 static const struct RandomItemGeneratorOptions sRandomItemGeneratorOptions[RANDOM_ITEM_OPTIONS_COUNT] =

@@ -5,6 +5,7 @@
 #include "constants/moves.h"
 #include "constants/pokeball.h"
 #include "constants/species.h"
+#include "gba/types.h"
 
 #define FILTER_FUNC_ARG_NONE 0xFFFF
 #define RANDOM_MON_MAX_FORMS 70
@@ -15,6 +16,7 @@ struct FilterFuncArgs
     u16 arg2;
 };
 
+static bool32 IsInBstRangeFilterFunc(enum Species species, const struct FilterFuncArgs *filterFuncArgs);
 enum Species GetRandomSpecies(u32 optionId, const struct FilterFuncArgs *filterFuncArgs);
 enum Item GetRandomItem(u32 optionId, const struct FilterFuncArgs *filterFuncArgs);
 enum PokeBall GetRandomBall(void);

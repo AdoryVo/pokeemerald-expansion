@@ -31,6 +31,8 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
+#include "random_mon_generation.h"
+#include "constants/random_mon_generation.h"
 
 extern const u8 EventScript_SprayWoreOff[];
 
@@ -578,7 +580,18 @@ bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum WildPok
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
-    CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+    enum Species generatedSpecies =
+        wildMonInfo->wildPokemon[wildMonIndex].species;
+
+    // Randomize wild mon species based on BST.
+    const struct FilterFuncArgs args = {
+        .arg1 = GetSpeciesBaseStatTotal(
+            GET_BASE_SPECIES_ID(generatedSpecies)), // BST centerpoint/standard
+        .arg2 = 50,                                 // BST leniency
+    };
+    enum Species randomizedSpecies = GetRandomSpecies(SPECIES_GENERATOR_BST_RESTRICTED, &args);
+    CreateWildMon(randomizedSpecies, level);
+
     return TRUE;
 }
 
