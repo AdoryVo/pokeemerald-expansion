@@ -56,7 +56,7 @@ endif
 ifeq (debug,$(MAKECMDGOALS))
   DEBUG := 1
 endif
-ifneq (,$(filter release tidyrelease,$(MAKECMDGOALS)))
+ifneq (,$(filter release tidyrelease patch,$(MAKECMDGOALS)))
   RELEASE := 1
 endif
 
@@ -595,3 +595,17 @@ leafgreen: all
 # Symbol file (`make syms`)
 $(SYM): $(ELF)
 	$(OBJDUMP) -t $< | sort -u | grep -E "^0[2389]" | $(PERL) -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \2 \3 \4/g' > $@
+
+# ---- Patch generation -------------------------------------------------------
+
+BASEROM := baserom.gba
+DIST_DIR := dist
+VERSION := 0.1.0
+PATCH_NAME ?= nest-emerald-v$(VERSION).bps
+
+.PHONY: patch
+
+patch: rom
+	@mkdir -p $(DIST_DIR)
+	flips --create --bps $(BASEROM) $(ROM_NAME) $(DIST_DIR)/$(PATCH_NAME)
+	@echo "Created $(DIST_DIR)/$(PATCH_NAME)"
