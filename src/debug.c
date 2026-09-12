@@ -95,6 +95,7 @@ enum FlagsVarsDebugMenu
     DEBUG_FLAGVAR_MENU_ITEM_VARS,
     DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL,
     DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET,
+    DEBUG_FLAGVAR_MENU_ITEM_TESTING,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV,
@@ -325,6 +326,7 @@ static void DebugAction_Outbreak_ClearActive(u8 taskId);
 
 static void DebugAction_FlagsVars_PokedexFlags_All(u8 taskId);
 static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId);
+static void DebugAction_FlagsVars_Testing(u8 taskId);
 static void DebugAction_FlagsVars_SwitchDex(u8 taskId);
 static void DebugAction_FlagsVars_SwitchNatDex(u8 taskId);
 static void DebugAction_FlagsVars_SwitchPokeNav(u8 taskId);
@@ -742,6 +744,7 @@ static const struct DebugMenuOption sDebugMenu_Actions_Flags[] =
     [DEBUG_FLAGVAR_MENU_ITEM_VARS]                 = { COMPOUND_STRING("Set Var XYZ…"),                      DebugAction_Selection_Init, &sSetVarSelection},
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL]         = { COMPOUND_STRING("Pokédex Flags All"),                 DebugAction_FlagsVars_PokedexFlags_All },
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET]       = { COMPOUND_STRING("Pokédex Flags Reset"),               DebugAction_FlagsVars_PokedexFlags_Reset },
+    [DEBUG_FLAGVAR_MENU_ITEM_TESTING]              = { COMPOUND_STRING("Toggle {STR_VAR_1}Testing FlagVar"), DebugAction_ToggleFlag, DebugAction_FlagsVars_Testing},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX]       = { COMPOUND_STRING("Toggle {STR_VAR_1}Pokédex"),         DebugAction_ToggleFlag, DebugAction_FlagsVars_SwitchDex },
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX]        = { COMPOUND_STRING("Toggle {STR_VAR_1}National Dex"),    DebugAction_ToggleFlag, DebugAction_FlagsVars_SwitchNatDex },
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV]       = { COMPOUND_STRING("Toggle {STR_VAR_1}PokéNav"),         DebugAction_ToggleFlag, DebugAction_FlagsVars_SwitchPokeNav },
@@ -1535,6 +1538,9 @@ static u32 Debug_CheckToggleFlags(u8 id)
 
     switch (id)
     {
+    case DEBUG_FLAGVAR_MENU_ITEM_TESTING:
+        result = FlagGet(FLAG_TESTING);
+        break;
     case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX:
         result = FlagGet(FLAG_SYS_POKEDEX_GET);
         break;
@@ -2948,6 +2954,12 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
     }
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();
+}
+
+static void DebugAction_FlagsVars_Testing(u8 taskId)
+{
+    FlagToggle(FLAG_TESTING);
+    VarSet(VAR_TESTING, 2);
 }
 
 static void DebugAction_FlagsVars_SwitchDex(u8 taskId)

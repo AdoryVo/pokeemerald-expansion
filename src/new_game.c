@@ -158,6 +158,12 @@ void ResetMenuAndMonGlobals(void)
     ResetPokeblockScrollPositions();
 }
 
+static void InitMyHackDefaults(void)
+{
+    FlagSet(FLAG_TESTING);
+    VarSet(VAR_TESTING, 1);
+}
+
 void NewGameInitData(void)
 {
 #if IS_FRLG
@@ -234,6 +240,8 @@ void NewGameInitData(void)
     ResetItemFlags();
     ResetDexNav();
     ClearFollowerNPCData();
+
+    InitMyHackDefaults();
 }
 
 static void ResetMiniGamesRecords(void)
