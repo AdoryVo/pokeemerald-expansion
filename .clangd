@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+    - -Iinclude
+    - -I../include
+    - -DMODERN=1
+    - -std=gnu17
