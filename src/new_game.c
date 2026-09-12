@@ -236,7 +236,7 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetTrainerTowerResults();
     ResetContestLinkResults();
-    SetCurrentDifficultyLevel(DIFFICULTY_NORMAL);
+    SetCurrentDifficultyLevel(DIFFICULTY_HARD);
     ResetItemFlags();
     ResetDexNav();
     ClearFollowerNPCData();
